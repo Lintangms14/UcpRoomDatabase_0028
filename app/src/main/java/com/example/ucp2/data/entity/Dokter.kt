@@ -11,5 +11,6 @@ data class Dokter(
     val spesialis: String,
     val klinik: String,
     val NoTelpon: String,
-    val jamKerja: String
+    val jamKerja: String,
+    val warnaSpesialis: Int
 )
