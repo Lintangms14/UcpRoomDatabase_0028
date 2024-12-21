@@ -9,21 +9,20 @@ import com.example.ucp2.data.dao.JadwalDao
 import com.example.ucp2.data.entity.Dokter
 import com.example.ucp2.data.entity.Jadwal
 
-@Database(entities = [Dokter::class, Jadwal::class], version = 1, exportSchema = false)
-abstract class RsDatabase : RoomDatabase(){
-    abstract fun DokterDao(): DokterDao
-    abstract fun JadwalDao(): JadwalDao
+@Database(entities = [Dokter::class], version = 1, exportSchema = false)
+abstract class DokterDatabase : RoomDatabase() {
+    abstract fun dokterDao(): DokterDao
 
     companion object {
         @Volatile
-        private var Instance: RsDatabase? = null
+        private var Instance: DokterDatabase? = null
 
-        fun getDatabase(context: Context): RsDatabase {
+        fun getDatabase(context: Context): DokterDatabase {
             return (Instance ?: synchronized(this) {
                 Room.databaseBuilder(
                     context.applicationContext,
-                    RsDatabase::class.java,
-                    "RsDatabase"
+                    DokterDatabase::class.java,
+                    "dokterDatabase"
                 )
                     .build().also { Instance = it }
             })
