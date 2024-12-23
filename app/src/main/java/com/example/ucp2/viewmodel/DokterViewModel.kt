@@ -28,3 +28,18 @@ fun DokterEvent.toDokterEntity(): Dokter  = Dokter(
 )
 
 
+data class FormErrorStateDokter(
+    val id: String? = null,
+    val nama: String? = null,
+    val spesialis: String? = null,
+    val klinik: String? = null,
+    val NoTelpon: String? = null,
+    val jamKerja: String? = null
+) {
+    fun isValid(): Boolean {
+        return id != null && nama != null && spesialis != null &&
+                klinik != null && NoTelpon != null && jamKerja != null
+
+    }
+}
+
