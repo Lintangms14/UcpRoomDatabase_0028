@@ -155,3 +155,53 @@ fun ListDokter(
     }
 }
 
+@Composable
+fun BodyHomeDokterView(
+    homeDokterUiState: HomeDokterUiState,
+    modifier: Modifier = Modifier,
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+    when {
+        homeDokterUiState.isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeDokterUiState.isError -> {
+            LaunchedEffect(homeDokterUiState.errorMessages) {
+                homeDokterUiState.errorMessages?.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message)
+                    }
+                }
+            }
+        }
+
+        homeDokterUiState.listDokter.isEmpty() -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak Ada Data Dokter",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            ListDokter(
+                listDktr = homeDokterUiState.listDokter,
+                modifier = modifier
+            )
+        }
+    }
+}
+
