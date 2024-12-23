@@ -111,3 +111,30 @@ fun FormJadwal(
     }
 }
 
+@Composable
+fun InsertBodyJadwal(
+    modifier: Modifier = Modifier,
+    onValueChange: (JadwalEvent) -> Unit,
+    uiState: JadwalUiState,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        FormJadwal(
+            jadwalEvent = uiState.jadwalEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = Modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Text("Simpan")
+        }
+    }
+}
+
