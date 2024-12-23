@@ -121,3 +121,29 @@ fun CardJadwal(
 }
 
 
+@Composable
+fun ListJadwal(
+    listjwl: List<Jadwal>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            items = listjwl,
+            itemContent = { jwl ->
+                CardJadwal(
+                    jwl = jwl,
+                    onClick = {
+                        println("Clicked on Jadwal ID: ${jwl.id}")
+                        onClick(jwl.id)
+                    }
+                )
+            }
+        )
+    }
+}
+
+
+
