@@ -38,3 +38,46 @@ fun Jadwal.toDetailJadwalUiEvent(): JadwalEvent {
     )
 }
 
+class DetailJadwalViewModel(
+    savedStateHandle: SavedStateHandle,
+    private val repositoryJadwal: RepositoryJadwal,
+
+    ) : ViewModel() {
+    private val _id: String = checkNotNull(savedStateHandle[AlamatNavigation.DestinasiDetail.id])
+
+    val detailUiState: StateFlow<DetailJadwalUiState> = repositoryJadwal.getJadwal(_id)
+        .filterNotNull()
+        .map {
+            DetailJadwalUiState(
+                detailUiEvent = it.toDetailJadwalUiEvent(),
+                isLoading = false,
+            )
+        }
+        .onStart {
+            emit(DetailJadwalUiState(isLoading = true))
+            delay(600)
+        }
+        .catch {
+            emit(
+                DetailJadwalUiState(
+                    isLoading = false,
+                    isError = true,
+                    errorMessage = it.message ?: "Terjadi Kesalahan"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(2000),
+            initialValue = DetailJadwalUiState(
+                isLoading = true
+            ),
+        )
+    fun deleteJadwal() {
+        detailUiState.value.detailUiEvent.toJadwalEntity().let {
+            viewModelScope.launch {
+                repositoryJadwal.deleteJadwal(it)
+            }
+        }
+    }
+}
