@@ -188,3 +188,46 @@ fun BodyDetailJdwl(
     }
 }
 
+@Composable
+fun DetailJdwlView(
+    modifier: Modifier = Modifier,
+    viewModel: DetailJadwalViewModel = viewModel(factory = PenyediaViewModel.factory),
+    onBack: () -> Unit = { },
+    onEditClick: (String) -> Unit = { },
+    onDeleteClick: () -> Unit = { }
+) {
+    Scaffold (
+        modifier = Modifier,
+        topBar = {
+            TopAppBar(
+                judul = "Detail Jadwal",
+                showBackButton = true,
+                onBack = onBack,
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = { onEditClick(viewModel.detailUiState.value.detailUiEvent.id) },
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier.padding(16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Edit,
+                    contentDescription = "Edit Jadwal"
+                )
+            }
+        }
+    ) {
+            innerPadding ->
+        val detailUiState by viewModel.detailUiState.collectAsState()
+
+        BodyDetailJdwl(
+            modifier = modifier.padding(innerPadding),
+            detailUiState = detailUiState,
+            onDeleteClick = {
+                viewModel.deleteJadwal()
+                onDeleteClick()
+            }
+        )
+    }
+}
