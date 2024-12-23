@@ -146,4 +146,59 @@ fun ListJadwal(
 }
 
 
+@Composable
+fun BodyHomeJwlView(
+    homeJadwalUiState: HomeJadwalUiState,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val snackBarHostState = remember { SnackbarHostState() }
+
+    when {
+        homeJadwalUiState.isLoading -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        homeJadwalUiState.isError -> {
+            LaunchedEffect(homeJadwalUiState.errorMessages) {
+                homeJadwalUiState.errorMessages?.let { message ->
+                    coroutineScope.launch {
+                        snackBarHostState.showSnackbar(message)
+                    }
+                }
+            }
+        }
+
+        homeJadwalUiState.listJwl.isEmpty() -> {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Tidak Ada Data Jadwal",
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+
+        else -> {
+            ListJadwal(
+                listjwl = homeJadwalUiState.listJwl,
+                onClick = {
+                    onClick(it)
+                    println("Selected Jadwal ID: $it")
+                },
+                modifier = modifier
+            )
+        }
+    }
+}
 
