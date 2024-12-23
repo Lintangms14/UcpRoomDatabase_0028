@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ucp2.data.entity.Jadwal
+import com.example.ucp2.repository.RepositoryDokter
 import com.example.ucp2.repository.RepositoryJadwal
 import kotlinx.coroutines.launch
 
@@ -26,4 +27,19 @@ fun JadwalEvent.toJadwalEntity(): Jadwal  = Jadwal(
     tanggalKonsultasi = tanggalKonsultasi,
     status = status
 )
+
+data class FormErrorStateJadwal(
+    val id: String? = null,
+    val namaPasien: String? = null,
+    val namaDokter: String? = null,
+    val noTelpon: String? = null,
+    val tanggalKonsultasi: String? = null,
+    val status: String? = null
+) {
+    fun isValid(): Boolean {
+        return id != null && namaPasien != null && namaDokter != null &&
+                noTelpon != null && tanggalKonsultasi != null && status != null
+
+    }
+}
 
