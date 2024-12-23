@@ -37,8 +37,8 @@ data class FormErrorStateJadwal(
     val status: String? = null
 ) {
     fun isValid(): Boolean {
-        return id != null && namaPasien != null && namaDokter != null &&
-                noTelpon != null && tanggalKonsultasi != null && status != null
+        return id == null && namaPasien == null && namaDokter == null &&
+                noTelpon == null && tanggalKonsultasi == null && status == null
 
     }
 }
@@ -50,7 +50,7 @@ data class JadwalUiState(
 )
 
 class JadwalViewModel(
-    private val repositoryJadwal: RepositoryJadwal
+    private val repositoryJadwal: RepositoryJadwal,
 ) : ViewModel(){
 
     var uiState by mutableStateOf(JadwalUiState())
@@ -63,16 +63,16 @@ class JadwalViewModel(
     }
     private  fun validateFields() : Boolean{
         val event = uiState.jadwalEvent
-        val errorState = FormErrorStateJadwal(
-            id = if (event.id.isNotEmpty()) "Id tidak boleh kosong" else null,
-            namaPasien = if (event.namaPasien.isNotEmpty()) "Nama Pasien tidak boleh kosong" else null,
-            namaDokter = if (event.namaDokter.isNotEmpty()) "Nama Dokter tidak boleh kosong" else null,
-            noTelpon = if (event.noTelpon.isNotEmpty()) "noTelepon tidak boleh kosong" else null,
-            tanggalKonsultasi = if (event.tanggalKonsultasi.isNotEmpty()) "Tanggal Konsultasi tidak boleh kosong" else null,
-            status = if (event.status.isNotEmpty()) "Status tidak boleh kosong" else null
+        val errorJState = FormErrorStateJadwal(
+            id = if (event.id.isEmpty()) "Id tidak boleh kosong" else null,
+            namaDokter = if (event.namaDokter.isEmpty()) "Nama Dokter tidak boleh kosong" else null,
+            namaPasien = if (event.namaPasien.isEmpty()) "Nama Pasien tidak boleh kosong" else null,
+            noTelpon = if (event.noTelpon.isEmpty()) "Nomor Hp tidak boleh kosong" else null,
+            tanggalKonsultasi = if (event.tanggalKonsultasi.isEmpty()) "Tanggal tidak boleh kosong" else null,
+            status = if (event.status.isEmpty()) "Status tidak boleh kosong" else null
         )
-        uiState = uiState.copy(isEntryValid = errorState)
-        return errorState.isValid()
+        uiState = uiState.copy(isEntryValid = errorJState)
+        return errorJState.isValid()
     }
 
     fun saveData() {
