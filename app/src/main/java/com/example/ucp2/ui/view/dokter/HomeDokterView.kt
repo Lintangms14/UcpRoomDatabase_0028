@@ -205,3 +205,127 @@ fun BodyHomeDokterView(
     }
 }
 
+@Composable
+fun HomeDokterView(
+    viewModel: HomeDokterViewModel = viewModel(factory = PenyediaViewModel.factory),
+    onAddDktr: () -> Unit = { },
+    onAddJdwl: () -> Unit = { },
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            Column {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color(0xFF6200EA),
+                                    Color(0xFF03DAC6)
+                                )
+                            )
+                        )
+                        .padding(16.dp)
+                        .clip(RoundedCornerShape(16.dp)),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.kesehatan),
+                            contentDescription = "Header Image",
+                            modifier = Modifier
+                                .size(60.dp)
+                                .clip(CircleShape)
+                                .border(2.dp, Color.White, CircleShape)
+                        )
+
+                        Spacer(modifier = Modifier.width(16.dp))
+
+                        Text(
+                            text = "Sehat Pedia",
+                            fontSize = 26.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier.padding(start = 8.dp)
+                        )
+                    }
+                }
+
+                TopAppBar(
+                    judul = "Daftar Dokter",
+                    showBackButton = false,
+                    onBack = { },
+                )
+            }
+        }
+    ) { innerPadding ->
+        val homeDokterUiState by viewModel.HomeDokterUiState.collectAsState()
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .clickable { onAddDktr() }
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                        .background(Color(0xFF03DAC6), shape = RoundedCornerShape(8.dp))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(8.dp)
+                    ) {
+                        Text(
+                            text = "Tambah Dokter",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.Black
+                        )
+                    }
+                }
+
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(8.dp)
+                        .clickable { onAddJdwl() }
+                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
+                        .background(Color(0xFFFF4081), shape = RoundedCornerShape(8.dp))
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .align(Alignment.CenterStart)
+                            .padding(8.dp)
+                    ) {
+                        Text(
+                            text = "Jadwal Pasien",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
+
+            BodyHomeDokterView(
+                homeDokterUiState = homeDokterUiState,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+    }
+}
