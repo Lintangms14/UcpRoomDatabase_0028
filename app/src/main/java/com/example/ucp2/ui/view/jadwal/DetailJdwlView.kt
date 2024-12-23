@@ -88,3 +88,42 @@ fun ComponentDetailjdwl(
     }
 }
 
+@Composable
+fun ItemDetailJdwl(
+    modifier: Modifier = Modifier,
+    jadwal: Jadwal
+) {
+    Card (
+        modifier = modifier
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
+        Column (
+            modifier = Modifier.padding(16.dp)
+        ){
+            ComponentDetailjdwl(judul = "id", isinya = jadwal.id)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            ComponentDetailjdwl(judul = "Nama Pasien", isinya = jadwal.namaPasien)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            ComponentDetailjdwl(judul = "Nama Dokter", isinya = jadwal.namaDokter)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            ComponentDetailjdwl(judul = "No Telpon", isinya = jadwal.noTelpon)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+
+            ComponentDetailjdwl(judul = "Tanggal Konsultasi", isinya = jadwal.tanggalKonsultasi)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+            ComponentDetailjdwl(judul = "Status", isinya = jadwal.status)
+            Spacer(modifier = Modifier.padding(4.dp))
+
+        }
+    }
+}
+
