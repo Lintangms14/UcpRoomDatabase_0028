@@ -133,3 +133,25 @@ fun CardDokter(
     }
 }
 
+@Composable
+fun ListDokter(
+    listDktr: List<Dokter>,
+    modifier: Modifier = Modifier,
+    onClick: (String) -> Unit = { }
+) {
+    LazyColumn(
+        modifier = modifier
+    ) {
+        items(
+            items = listDktr,
+            itemContent = { Dokter ->
+                CardDokter(
+                    Dokter = Dokter,
+                    onClick = { onClick(Dokter.id) },
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+            }
+        )
+    }
+}
+
