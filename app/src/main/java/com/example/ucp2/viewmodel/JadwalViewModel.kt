@@ -18,3 +18,12 @@ data class JadwalEvent(
     val status : String = ""
 )
 
+fun JadwalEvent.toJadwalEntity(): Jadwal  = Jadwal(
+    id = id,
+    namaDokter = namaDokter,
+    namaPasien = namaPasien,
+    noTelpon = noTelpon,
+    tanggalKonsultasi = tanggalKonsultasi,
+    status = status
+)
+
