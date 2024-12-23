@@ -20,3 +20,36 @@ data class HomeDokterUiState(
     val errorMessages: String = ""
 )
 
+class HomeDokterViewModel(
+    private val repositoryDokter: RepositoryDokter
+) : ViewModel() {
+
+    val HomeDokterUiState: StateFlow<HomeDokterUiState> = repositoryDokter.getAllDokter()
+        .filterNotNull()
+        .map {
+            HomeDokterUiState(
+                listDokter = it.toList(),
+                isLoading = false,
+            )
+        }
+        .onStart {
+            emit(HomeDokterUiState(isLoading = true))
+            delay(900)
+        }
+        .catch {
+            emit(
+                HomeDokterUiState(
+                    isLoading = false,
+                    isError = true,
+                    errorMessages = it.message ?: "Terjadi Kesalahan"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = HomeDokterUiState(
+                isLoading = true
+            )
+        )
+}
