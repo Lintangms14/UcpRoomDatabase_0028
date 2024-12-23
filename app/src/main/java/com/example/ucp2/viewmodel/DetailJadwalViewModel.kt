@@ -27,3 +27,14 @@ data class DetailJadwalUiState(
     val isUiEventNotEmpty: Boolean
         get() = detailUiEvent != JadwalEvent()
 }
+fun Jadwal.toDetailJadwalUiEvent(): JadwalEvent {
+    return JadwalEvent(
+        id = id,
+        namaPasien = namaPasien,
+        namaDokter = namaDokter,
+        noTelpon = noTelpon,
+        tanggalKonsultasi = tanggalKonsultasi,
+        status = status
+    )
+}
+
