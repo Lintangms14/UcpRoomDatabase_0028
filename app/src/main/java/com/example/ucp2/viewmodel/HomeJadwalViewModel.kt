@@ -20,3 +20,36 @@ data class HomeJadwalUiState(
     val errorMessages: String = ""
 )
 
+class HomeJadwalViewModel(
+    private val repositoryJadwal: RepositoryJadwal
+) : ViewModel() {
+
+    val homeJadwalUiState: StateFlow<HomeJadwalUiState> = repositoryJadwal.getAllJadwal()
+        .filterNotNull()
+        .map {
+            HomeJadwalUiState(
+                listJwl = it.toList(),
+                isLoading = false,
+            )
+        }
+        .onStart {
+            emit(HomeJadwalUiState(isLoading = true))
+            delay(900)
+        }
+        .catch {
+            emit(
+                HomeJadwalUiState(
+                    isLoading = false,
+                    isError = true,
+                    errorMessages = it.message ?: "Terjadi Kesalahan"
+                )
+            )
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = HomeJadwalUiState(
+                isLoading = true
+            )
+        )
+}
