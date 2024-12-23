@@ -127,3 +127,64 @@ fun ItemDetailJdwl(
     }
 }
 
+@Composable
+fun BodyDetailJdwl(
+    modifier: Modifier = Modifier,
+    detailUiState: DetailJadwalUiState = DetailJadwalUiState(),
+    onDeleteClick: () -> Unit = { }
+) {
+    var deleteConfirmationReuired by rememberSaveable { mutableStateOf(false) }
+    when {
+        detailUiState.isLoading -> {
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        }
+
+        detailUiState.isUiEventNotEmpty -> {
+            Column (
+                modifier = modifier.fillMaxWidth()
+                    .padding(16.dp)
+            ){
+                ItemDetailJdwl(
+                    jadwal = detailUiState.detailUiEvent.toJadwalEntity(),
+                    modifier = Modifier
+                )
+                Spacer(modifier = Modifier.padding(8.dp))
+                Button(
+                    onClick = { deleteConfirmationReuired = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(text = "Delete")
+                }
+
+                if (deleteConfirmationReuired) {
+                    DeleteConfirmationDialog(
+                        onDeleteConfirm = {
+                            deleteConfirmationReuired = false
+                            onDeleteClick()
+                        },
+                        onDeleteCancel = { deleteConfirmationReuired = false },
+                        modifier = Modifier.padding(8.dp)
+                    )
+                }
+            }
+        }
+
+        detailUiState.isUiEventEmpty -> {
+            Box(
+                modifier = modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Data Tidak Ditemukan",
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+    }
+}
+
