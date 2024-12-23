@@ -43,3 +43,9 @@ data class FormErrorStateDokter(
     }
 }
 
+data class DokterUiState(
+    val dokterEvent: DokterEvent = DokterEvent(),
+    val isEntryValid: FormErrorStateDokter = FormErrorStateDokter(),
+    val snackBarMessage: String? = null,
+)
+
