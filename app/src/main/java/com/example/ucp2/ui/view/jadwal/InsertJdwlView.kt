@@ -138,3 +138,7 @@ fun InsertBodyJadwal(
     }
 }
 
+object DestinasiInsertJadwal : AlamatNavigation {
+    override val route = "Insert_Jadwal"
+}
+
