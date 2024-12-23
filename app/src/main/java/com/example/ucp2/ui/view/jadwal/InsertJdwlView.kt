@@ -142,3 +142,52 @@ object DestinasiInsertJadwal : AlamatNavigation {
     override val route = "Insert_Jadwal"
 }
 
+@Composable
+fun InsertJdwlView(
+    onBack: () -> Unit,
+    onNavigate: () -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: JadwalViewModel = viewModel(factory = PenyediaViewModel.factory)
+){
+    val uiState = viewModel.uiState
+    val snackBarHostState = remember { SnackbarHostState() }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(uiState.snackBarMessage) {
+        uiState.snackBarMessage?.let { message ->
+            coroutineScope.launch {
+                snackBarHostState.showSnackbar(message)
+                viewModel.resetSnackBarMessage()
+            }
+        }
+    }
+    Scaffold(
+        modifier = modifier,
+        snackbarHost = { SnackbarHost(hostState = snackBarHostState) }
+    ) { padding ->
+        Column (
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp)
+        ){
+            TopAppBar(
+                onBack = onBack,
+                showBackButton = true,
+                judul = "Tambah Jadwal"
+            )
+            InsertBodyJadwal(
+                uiState = uiState,
+                onValueChange = {updatedEvent ->
+                    viewModel.updateState(updatedEvent)
+                },
+                onClick = {
+                    coroutineScope.launch {
+                        viewModel.saveData()
+                    }
+                    onNavigate()
+                }
+            )
+        }
+    }
+}
