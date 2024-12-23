@@ -166,3 +166,34 @@ fun FormDokter(
     }
 }
 
+@Composable
+fun InsertBodyDokter(
+    modifier: Modifier = Modifier,
+    onValueChange: (DokterEvent) -> Unit,
+    uiState: DokterUiState,
+    onClick: () -> Unit
+){
+    Column  (
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        FormDokter(
+            doketerEvent = uiState.dokterEvent,
+            onValueChange = onValueChange,
+            errorState = uiState.isEntryValid,
+            modifier = modifier.fillMaxWidth()
+        )
+        Button(
+            onClick = onClick,
+            modifier = modifier.fillMaxWidth()
+        ){
+            Text(text = "Simpan")
+        }
+    }
+}
+
+object DestinasiInsertDokter : AlamatNavigation {
+    override val route = "Insert_Dokter"
+}
+
