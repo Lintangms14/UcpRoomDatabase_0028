@@ -202,3 +202,51 @@ fun BodyHomeJwlView(
     }
 }
 
+@Composable
+fun HomeJdwlView(
+    viewModel: HomeJadwalViewModel = viewModel(factory = PenyediaViewModel.factory),
+    onAddjadwal: () -> Unit = {},
+    onDetailClick: (String) -> Unit = {},
+    onBack: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                judul = "Daftar Jadwal",
+                showBackButton = true,
+                onBack = onBack,
+            )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onAddjadwal,
+                shape = MaterialTheme.shapes.medium,
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clip(CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Tambah Jadwal",
+                    tint = Color.White
+                )
+            }
+        },
+        floatingActionButtonPosition = FabPosition.End
+    ) { innerPadding ->
+        val homeJadwalUiState by viewModel.homeJadwalUiState.collectAsState()
+
+        BodyHomeJwlView(
+            homeJadwalUiState = homeJadwalUiState,
+            onClick = {
+                onDetailClick(it)
+            },
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(horizontal = 16.dp, vertical = 8.dp)
+        )
+    }
+}
