@@ -45,6 +45,7 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -122,7 +123,7 @@ fun CardDokter(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Home,
+                    imageVector = Icons.Filled.AccountCircle,
                     contentDescription = ""
                 )
                 Spacer(modifier = Modifier.padding(16.dp))
