@@ -45,13 +45,16 @@ import kotlinx.coroutines.launch
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.ucp2.R
 import com.example.ucp2.ui.customwidget.TopAppBar
@@ -215,20 +218,24 @@ fun HomeDokterView(
     Scaffold(
         modifier = modifier,
         topBar = {
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFF6A1B9A),
+                                Color(0xFF8E24AA),
+                                Color(0xFFBA68C8)
+                            )
+                        )
+                    )
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(
-                            brush = Brush.verticalGradient(
-                                colors = listOf(
-                                    Color(0xFF6200EA),
-                                    Color(0xFF03DAC6)
-                                )
-                            )
-                        )
-                        .padding(16.dp)
-                        .clip(RoundedCornerShape(16.dp)),
+                        .padding(vertical = 36.dp, horizontal = 24.dp),
                     contentAlignment = Alignment.CenterStart
                 ) {
                     Row(
@@ -239,28 +246,43 @@ fun HomeDokterView(
                             painter = painterResource(id = R.drawable.kesehatan),
                             contentDescription = "Header Image",
                             modifier = Modifier
-                                .size(60.dp)
+                                .size(80.dp)
                                 .clip(CircleShape)
-                                .border(2.dp, Color.White, CircleShape)
+                                .border(5.dp, Color.White, CircleShape)
+                                .shadow(10.dp, CircleShape)
                         )
 
-                        Spacer(modifier = Modifier.width(16.dp))
+                        Spacer(modifier = Modifier.width(24.dp))
 
-                        Text(
-                            text = "Sehat Pedia",
-                            fontSize = 26.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier.padding(start = 8.dp)
-                        )
+                        Column {
+                            Text(
+                                text = "Sehat Pedia",
+                                fontSize = 32.sp,
+                                fontWeight = FontWeight.ExtraBold,
+                                color = Color.White,
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black.copy(alpha = 0.5f),
+                                        blurRadius = 10f
+                                    )
+                                )
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                text = "Kesehatan Anda, Prioritas Kami",
+                                fontSize = 14.sp,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color.White.copy(alpha = 0.85f),
+                                style = TextStyle(
+                                    shadow = Shadow(
+                                        color = Color.Black.copy(alpha = 0.3f),
+                                        blurRadius = 6f
+                                    )
+                                )
+                            )
+                        }
                     }
                 }
-
-                TopAppBar(
-                    judul = "Daftar Dokter",
-                    showBackButton = false,
-                    onBack = { },
-                )
             }
         }
     ) { innerPadding ->
@@ -270,6 +292,7 @@ fun HomeDokterView(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
+                .background(Color(0xFFF5F5F5))
         ) {
             Row(
                 modifier = Modifier
@@ -277,54 +300,90 @@ fun HomeDokterView(
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp)
-                        .clickable { onAddDktr() }
-                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-                        .background(Color(0xFF03DAC6), shape = RoundedCornerShape(8.dp))
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(8.dp)
-                    ) {
-                        Text(
-                            text = "Tambah Dokter",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color.Black
-                        )
-                    }
-                }
+                ButtonCard(
+                    text = "Tambah Dokter",
+                    backgroundColor = Color(0xFF4CAF50),
+                    icon = Icons.Default.Person,
+                    textColor = Color.White,
+                    onClick = onAddDktr
+                )
 
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp)
-                        .clickable { onAddJdwl() }
-                        .shadow(4.dp, shape = RoundedCornerShape(8.dp))
-                        .background(Color(0xFFFF4081), shape = RoundedCornerShape(8.dp))
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.CenterStart)
-                            .padding(8.dp)
-                    ) {
-                        Text(
-                            text = "Jadwal Pasien",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 18.sp,
-                            color = Color.White
-                        )
-                    }
-                }
+                ButtonCard(
+                    text = "Jadwal Pasien",
+                    backgroundColor = Color(0xFF2196F3),
+                    icon = Icons.Default.List,
+                    textColor = Color.White,
+                    onClick = onAddJdwl
+                )
             }
 
-            BodyHomeDokterView(
-                homeDokterUiState = homeDokterUiState,
-                modifier = Modifier.fillMaxSize()
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .shadow(4.dp, RoundedCornerShape(16.dp)),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    Text(
+                        text = "Daftar Dokter",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF6A1B9A)
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    BodyHomeDokterView(
+                        homeDokterUiState = homeDokterUiState,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+
+
+@Composable
+fun ButtonCard(
+    text: String,
+    backgroundColor: Color,
+    icon: ImageVector,
+    textColor: Color,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .height(80.dp)
+            .clickable(onClick = onClick)
+            .shadow(8.dp, shape = RoundedCornerShape(12.dp))
+            .background(backgroundColor, shape = RoundedCornerShape(12.dp)),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = text,
+                tint = textColor,
+                modifier = Modifier.size(24.dp)
+            )
+
+            Spacer(modifier = Modifier.width(8.dp))
+
+            Text(
+                text = text,
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp,
+                color = textColor
             )
         }
     }
