@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.example.ucp2.data.entity.Jadwal
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material3.FabPosition
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -87,7 +88,7 @@ fun CardJadwal(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Filled.DateRange,
+                    imageVector = Icons.Filled.AccountBox,
                     contentDescription = "Date Icon",
                     tint = MaterialTheme.colorScheme.primary
                 )
@@ -105,7 +106,7 @@ fun CardJadwal(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Home,
+                    imageVector = Icons.Filled.DateRange,
                     contentDescription = "Home Icon",
                     tint = MaterialTheme.colorScheme.primary
                 )
